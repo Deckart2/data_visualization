@@ -11,4 +11,4 @@ This repo serves as the github holding ground for web-focused data visualization
 
 Interactive map of children in poverty: [link](https://deckart2.github.io/data_visualization/map_d3/)
 
-Scrollytelling Healthcare changes: [link](https://deckart2.github.io/data_visualization/scrolly/)
+Scrollytelling Healthcare changes: [link](https://deckart2.github.io/data_visualization/scroll_rig/)
