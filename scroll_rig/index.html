@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        .chart-container {
+            max-width: 1050px;
+            border: 3px solid red;
+            margin: 0 auto;
+            /* auto centers the div */
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        svg {
+            border: 2px solid none;
+            overflow: visible;
+        }
+
+
+        h1 {
+            border: 2px solid green;
+        }
+
+        .filler {
+            height: 20rem;
+            text-align: center;
+        }
+
+        .filler h2 {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 54px;
+        }
+
+
+        .filler p {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 24px;
+            text-align: left;
+            margin: 20px auto;
+            line-height: 1.2;
+            max-width: 600px
+            
+        }
+
+        #scrolly-overlay .scrolly {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 24px;
+            max-width: 60rem;
+            margin: 3rem auto;
+            background-color: none;
+            padding: 1rem;
+            position: relative;
+
+        }
+
+        #scrolly-overlay .scrolly article {
+            padding: 0;
+            max-width: 30rem;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #scrolly-overlay .scrolly article .step {
+            min-height: 67vh;
+            margin-bottom: 1rem;
+        }
+
+        #scrolly-overlay .scrolly article .step:last-of-type {
+            margin-bottom: 0;
+        }
+
+        #scrolly-overlay .scrolly article .step.is-active p {
+            background-color: #008080;
+        }
+
+        #scrolly-overlay .scrolly article .step p {
+            margin: 0;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 400;
+            background-color: #5b5b5b;
+            transition: background-color 250ms ease-in-out;
+            color: #f4f4f4;
+        }
+
+        #scrolly-overlay .scrolly figure.sticky {
+            /* this is the key style for the chart */
+            position: sticky;
+            width: 100%;
+            height: 55vh;
+            /* vh is the unit that divdes the viewport in units of 1/100 */
+            /* height is 50 vh = half the height of the viewport */
+            background: none;
+            margin: 0;
+            top: 25vh;
+            /* this is how high it should be from top */
+
+            left: 0;
+        }
+
+        #scrolly-overlay .scrolly figure.sticky .bar-outer {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            width: 90%;
+            height: 4rem;
+            background-color: none;
+        }
+
+        #scrolly-overlay .scrolly figure.sticky .bar-inner {
+            width: 10%;
+            height: 100%;
+            transition: width 1s ease-in-out;
+            background-color: #daa520;
+        }
+
+        .spacer {
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class='filler'>
+        <h2>Obamacare revolutionized US Healthcare</h2>
+
+        <p>
+            Gabe Morrison, February 28, 2022
+        </a>
+        </p>
+
+    </section>
+
+    <section id='scrolly-overlay'>
+
+        <div class='scrolly'>
+
+            <!--  sticky graphic   -->
+            <figure class='sticky'>
+                <svg width="1050px" height="575px">
+      
+                </svg>
+                
+            </figure>
+
+            <!--  step text   -->
+            <article>
+                <div class='step' data-width='10%' data-index='1'>
+                    <p>2009 Healthcare Providers</p>
+                </div>
+                <div class='step' data-width='10%' data-index='0'>
+                    <p>2020 Healthcare Providers</p>
+                </div>
+               
+            </article>
+
+        </div>
+
+    </section>
+
+    <section class='filler'>
+ 
+        <div class="spacer"></div>
+        <p> Scrolly-telling Rig Design: Russell Goldenberg and Elaina Natario.  </p>
+        <p>
+            Data Source: Current Population Survey. 
+        </p>
+        <p>
+            Analysis: Matt Bruenig.
+        </p>
+   
+        </br>
+        </br>
+    </section>
+</body>
+
+<!-- add your script blocks at the end -->
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://unpkg.com/enter-view@1.0.0/enter-view.min.js"></script>
+<!-- https://github.com/russellgoldenberg/enter-view -->
+
+
+<script>
+    const container = d3.select('#scrolly-overlay');
+    const stepSel = container.selectAll('.step'); //final all the step nodes
+
+    function updateChart(index) {
+        const sel = container.select(`[data-index='${index}']`);
+        const width = sel.attr('data-width');
+        stepSel.classed('is-active', (d, i) => i === index);
+        container.select('.bar-inner').style('width', width);
+    }
+
+    
+
+    let svg = d3.select("body").select("#scrolly-overlay").select(".scrolly").select(".sticky")
+        .select("svg")
+
+    d3.csv("healthcare_data.csv").then(function (data) {
+        let year_state = 2009;
+
+        console.log("year is:", year_state)
+
+        let width = 900;
+        let height = 500;
+        let margin = { top: 10, right: 10, bottom: 10, left: 30 };
+
+        let sel_cols = [
+            "Medicaid",
+            "Medicare",
+            "Medicare+Medicaid",
+            "Employer",
+            "Uninsured",
+            "Direct Purchase",
+            "Subsidized Exchange",
+            "CHIP",
+            "Military",
+            "Other"]
+
+        let sel_colors = [
+            "#f44336", // "Medicaid",
+            "#FF9800", // "Medicare",
+            "#FDD835", // "Medicare+Medicaid",
+            "#FFF8E1", // "Employer",
+            "#26A69A", // "Uninsured",
+            "#4DD0E1", // "Direct Purchase",
+            "#F06292", // "Subsidized Exchange",
+            "#5C6BC0", // "CHIP",
+            "#90A4AE", // "Military",
+            "#E0E0E0"  // "Other"
+        ]
+        
+        let d_2020 = data.filter(d => d.year == 2020)
+        let d_2009 = data.filter(d => d.year == 2009)
+
+        var series_2020 = d3.stack().keys(sel_cols)(d_2020);
+        var series_2009 = d3.stack().keys(sel_cols)(d_2009);
+
+        let series_2020_group = d3.group(series_2020)
+        
+
+        let color = d3.scaleOrdinal() //takes domain and outputs a different range
+            .domain(sel_cols)    //good for renaming something or casting it in a different way
+            .range(sel_colors)
+
+        let x = d3.scaleLinear()
+            .domain([0, 100])
+            .range([margin.left, width])
+
+        let y = d3.scaleLinear()
+            .domain([0, 1])
+            .range([height - margin.bottom, margin.top])
+
+
+        let xAxisSettings = d3.axisBottom(x)
+            .tickSize(5)
+            .tickPadding(6)
+            .tickValues([5, 10, 20, 30, 40, 50, 60, 70, 80, 80, 90, 95]) //define values of tics
+            .tickFormat(d3.format(".0f"))
+
+        let xAxis = svg.append("g")
+            .attr("class", "x axis")
+            .call(xAxisSettings)
+            .call(g =>g.selectAll(".domain").remove())
+            .attr("transform", `translate(0, ${height - margin.bottom})`)
+
+
+        let yAxisSettings = d3.axisLeft(y)
+            .tickValues([.2, .4, .6, .8])
+            .tickSize(6)
+            .tickPadding(4)
+            .tickFormat(d3.format(".0%"))
+
+        let yAxis = svg
+            .append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(" + 30 + ",0)")
+            .call(yAxisSettings)
+            .call(g => g.selectAll(".domain").remove())
+        
+        svg.append("text")
+            .attr("class", "axis-label")
+            .attr("x", x(44))
+            .attr("y", y(-.08))
+            .text("INCOME PERCENTILE")
+        
+
+        
+        let dur = 1500
+        let es = d3.easeCubicOut
+        
+        let care_x_20 = x(8)
+        let care_y_20 = y(.435)
+        let care_x_9 = x(10) 
+        let care_y_9 = y(.330)
+
+        let un_x_20 = x(22)
+        let un_y_20 = y(.82)
+        let un_x_9 = x(10)
+        let un_y_9 = y(.73)
+        
+        let emp_x_20 = x(77)
+        let emp_x_9 = x(80) 
+        let emp_y_20 = y(.50)
+        let emp_y_9 = y(.450)
+
+        let caid_x_20 = x(7)
+        let caid_x_9 = x(12)
+        let caid_y_20 = 415
+        let caid_y_9 = 435
+
+        let dp_x = x(100.5)
+        let dp_y_9 = y(.9325)
+        let dp_y_20 = y(.925)
+
+
+
+        let area = d3.area()
+            .x(d => x(d.data.Percentile))
+            .y0(d => y(d[0]))
+            .y1(d => y(d[1]))
+
+
+            //Initialize areas 
+        let areas = svg.append("g")
+                        .attr("class", "area") 
+            .selectAll("path")
+            .data(series_2009, d =>d.group)
+            .join("path")
+            .attr("class", d => {
+                return d.key
+            })
+            .attr("fill", d=> color(d.key))
+            .attr("d", area)
+
+    
+        
+
+
+        
+        function update(index) {
+            console.log("update")
+            console.log("INDEX IS:", index);
+            
+            if (index ==0){
+                if (year_state == 2009){
+                    year_state = 2020
+                } else {
+                    year_state = 2009
+                }
+            } 
+
+
+
+            if (year_state == 2009) {
+                dance(series_2009)
+                //hed.html("2020")
+
+                d3
+                    .selectAll("#Employer")
+                    .transition()
+                    .attr("x", emp_x_20)
+                    .attr("y", emp_y_20)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+                
+                d3
+                    .selectAll("#Medicaid")
+                    .transition()
+                    .duration(dur)
+                    .attr("x", caid_x_9)
+                    .attr("y", caid_y_9)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+
+                d3
+                    .selectAll("#Medicare")
+                    .transition()
+                    .duration(dur)
+                    .attr("x", care_x_9)
+                    .attr("y", care_y_9)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+
+                d3
+                    .selectAll("#Uninsured")
+                    .transition()
+                    .duration(dur)
+                    .attr("x", un_x_9)
+                    .attr("y", un_y_9)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+                
+                d3 
+                    .selectAll("#DP")
+                    .transition()
+                    .duration(dur)
+                    .attr("x", dp_x)
+                    .attr("y", dp_y_9)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+
+
+            } else {
+                dance(series_2020)
+                //hed.html("2009")
+
+                d3
+                    .selectAll("#Employer")
+                    .transition()
+                    .attr("x", emp_x_9)
+                    .attr("y", emp_y_9)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+                
+                d3
+                    .selectAll("#Medicaid")
+                    .transition()
+                    .attr("x", caid_x_20)
+                    .attr("y", caid_y_20)
+                    .duration(dur)
+                    .ease(d3.easeCubicOut)
+                
+                d3
+                    .selectAll("#Medicare")
+                    .transition()
+                    .duration(dur)
+                    .attr("x", care_x_20)
+                    .attr("y", care_y_20)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+                
+                d3
+                    .selectAll("#Uninsured")
+                    .transition()
+                    .duration(dur)
+                    .attr("x", un_x_20)
+                    .attr("y", un_y_20)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+                
+                d3 
+                    .selectAll("#DP")
+                    .transition()
+                    .duration(dur)
+                    .attr("x", dp_x)
+                    .attr("y", dp_y_20)
+                    .duration(1500)
+                    .ease(d3.easeCubicOut)
+
+            }
+        } 
+        console.log("New Year state " + year_state)
+
+        function dance(filtered_data) {
+            d3
+                .selectAll("path")
+                .data(filtered_data)
+                .transition()
+                .attr("d", area)
+                .duration(1500)
+                .ease(d3.easeCubicOut)
+                }
+  
+        
+
+        svg.append("text")
+            .attr("class", "label")
+            .attr("id", "Employer")
+            .attr("x", emp_x_20)
+            .attr("y", emp_y_20)
+            .text("Employer")
+        
+        svg.append("text")
+            .attr("class", "label")
+            .attr("id", "Medicaid")
+            .attr("x", caid_x_9)
+            .attr("y", caid_y_9)
+            .text("Medicaid")
+            .style("fill", "white")
+
+        svg.append("text")
+            .attr("class", "label")
+            .attr("id", "Medicare")
+            .attr("x", care_x_9)
+            .attr("y", care_y_9)
+            .text("Medicare")
+            .style("fill", "#514644")
+
+        svg.append("text")
+            .attr("class", "label")
+            .attr("id", "Uninsured")
+            .attr("x", un_x_9)
+            .attr("y", un_y_9)
+            .text("Uninsured")
+            .style("fill", "white")
+
+    
+        function init() {
+
+            enterView({ //our main view function
+                selector: stepSel.nodes(),
+                offset: 0.5, //when the slide is 50% away then trigger your chart
+                enter: el => { //what's supposed to happen when the slide enters?
+                    const index = +d3.select(el).attr('data-index'); //extract the data-index attribute. this can be anything: a filter, a date, whatever.
+                    console.log("Index is", index)
+                    update(index);
+                },
+                exit: el => { //what's supposed to happen when the slide exits?
+                    //let index = +d3.select(el).attr('data-index');
+                    //index = Math.max(0, index - 1);
+                    //updateChart(index);
+                    const index = +d3.select(el).attr('data-index');
+                    update(index);
+
+                } 
+            })
+        }
+
+
+        
+
+    init();
+    }) 
+
+        
+    
+
+
+
+</script>
