@@ -8,59 +8,71 @@
         
 
         .p {
-            text-align: left;
+            /* text-align: left; */
             width: 80%;
-            /* max-width: 0px; */
             margin-left: 30px;
             border: 1px solid none;
             max-width:900px;
-
-
+            display:block;
+            margin:auto;
 
         }
 
         svg {
             background-color: white;
             border-color: green;
-            float:center;
+            display:block;
+            margin:auto;
         }
 
+ 
 
+        .h1 {
+            margin:auto;
+            display:block;
+            text-align: center;
 
-        h1 {
-            float: center;
+        }
+
+        .h2 {
+            margin:auto;
+            display:block;
+            text-align: center;
+        }
+
+        .h4 {
+            text-align: center;
+
         }
 
         .float-child-map {
             width: 85%;
-            max-width:900px;
-            float: center;
+            max-width:1000px;
+            display: block;
             padding: 0px;
             border: 1px solid none;
+            margin:auto;
         } 
-
 
         .float-container {
             border: 2px solid none;
             width:100%;
-            height:850px;
-            float: left;
+            height:1000px;
+            display: block;
+            margin:auto;
+
         }
         .slider {
             max-width: 900px;
             float:"right";
         }
-        
-        .h2 {
-            text-size-adjust: 180%;
-            float:"right";
+        .p.value-time{
+            display: block;
+            margin:auto;
         }
 
-        .svg.p {
-            max-width: 50px;
-            }
-
-
+        
+    
 
      
     </style>
@@ -68,7 +80,7 @@
 
 <body>
     
-    <div class = "h1"> On the Move: Chicago Residential Patterns Reflects the Challenges and Opportunities of the Decade  </div>
+    <div class = "h1"> On the Move: Chicago Residential Patterns Reflect the Challenges and Opportunities of the Era  </div>
     <div class = "h4"> By: Gabe Morrison </div>
     <div class = "h4"> March 12, 2022</div>
 
@@ -84,14 +96,12 @@
     <div class = "p", id="history4"> </div>
     <div class = "p">  </div>
 
-
-    
     
     <div class="svg">
 
     <div class="#slider", id ="slider">
         <div id="slider-time"></div>
-        <div class = "#h2"> <p id="value-time", style="font-size:215%"> </p></div>
+        <div class = "h2"> <p id="value-time", style="float:center"> </p></div>
     </div>
         
         <div class = "float-container"> 
@@ -120,23 +130,23 @@
   crossorigin="anonymous"
 />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> 
-</script>
+</script> 
 
-
+  
 
 <script>
     let time_between_intervals = 15000
 
 
-    let text1 = "Chicago’s population and migration patterns are both emblematic of urban dynamics across America, but they also reveal Chicago’s uniqueness. Relative to American cities on the East Coast, Chicago is young. It was incorporated as a city in 1837, well after metropolises like New York City and Philadelphia. Fueled by immigration from Europe and by it manufacturing and trading prowess, Chicago’s population exploded in the between 1850 and 1930. <br> <br>"
+    let text1 = "Chicago’s population and migration patterns are emblematic of urban dynamics across America, but they also reveal Chicago’s unique growth and challenges. Relative to American cities on the East Coast, Chicago is young. It was incorporated as a city in 1837, well after metropolises like New York City and Philadelphia ('Chicago History'). Fueled by immigration from Europe and by its manufacturing and trading prowess, Chicago’s population exploded in the between 1850 and 1930 (Nugent 2004). <br> <br>"
     let text2 = "Like other American cities in the 20th century, Chicago experienced White Flight to the suburbs, displacement from highway construction, and a hollowing out of the city center. More recently, Chicago has experienced a downtown repopulation and revitalization. <br> <br>"    
-    let text3 = "But Chicago is also unique, particularly in its racial and ethnic diversity. Black Americans migrated to Chicago as part of the Great Migration away from the South and made Chicago a “Black Mecca” in the mid 20th century. In more recent years, many Hispanics have moved to Chicago’s Northwest and Southwest Sides. However, this diversity should not be confused with equality. In fact, Chicago has a sordid history of segregation, particularly against African Americans, who were ruthlessly segregated into a handful of neighborhoods in the first half of the 20th century. Disinvestment of minority communities has and continues to be one of Chicago’s most pressing challenges and explains the exodus of Black Chicagoans from the South Side in the past 50 years. <br> <br>"
-    let text4 = "The maps below show the total population and level of population change in Chicago from 1920 – 2020. Circle size indicates neighborhood population, and color indicates growth or decline from the previous decade. The annotations highlight the trends show how the trends described above area revealed themselves across time and space. The chart updates automatically, but you can also change the year shown with the slider below. <br> <br>"
+    let text3 = "Chicago is unique in part because of its racial and ethnic diversity. Black Americans migrated to Chicago as part of the Great Migration away from the South and made Chicago a “Black Mecca” for arts, culture, and politics in the mid-20th century (Scarborough et al. 2020). In more recent years, many Hispanic people have moved to Chicago’s Northwest and Southwest Sides (Nugent 2020; 'Population Change... 2001'). However, this diversity should not be confused with either equity or equality. In fact, Chicago has a sordid history of segregation, particularly against African Americans who were ruthlessly segregated into a handful of neighborhoods in the first half of the 20th century. Disinvestment of minority communities has and continues to be one of Chicago’s most pressing challenges and explains the exodus of Black Chicagoans from the South Side in the past 50 years (Scarborough et al. 2020). <br> <br>"
+    let text4 = "The maps below show the total residential population and level of population change by census tract in Chicago from 1920 to 2020. Circle size indicates neighborhood population, and color indicates growth or decline from the previous decade. The annotations highlight how the trends described above can be seen across time and space. The chart updates automatically, but you can also change the year shown with the slider below. <br> <br>"
     let text_end = "All data is from IPUMS. Data was extracted at the census tract scale from the census tracts of a given year and “cross-walked” to the 2010 census tract scale. A full list of citations for the written content above and for the IPUMS data can be found here: <br> <br>"
 
 
 
-
+  
     d3.select('#history1')
         .append('div')
         .html(text1)
