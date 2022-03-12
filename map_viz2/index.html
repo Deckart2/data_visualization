@@ -4,89 +4,61 @@
 <head>
     <meta charset="utf-8">
     <style>
-        body {
-            max-width: 350;
-            /* margin-right: auto;
-            margin-left: auto;
-            margin-top: 10px;
-            margin-bottom: 10px;
 
-            margin: 10px auto 10px auto; */
+        
 
-            margin: 10px auto;
-        }
-        .chart-container {
-            max-width: 500px;
-            /* background-color: green; */
-            border: 3px solid orange;
-            /* margin: 0 auto; */
-            /* auto centers the div */
-            opacity: 1;
-            /* animation-name: fadeOutOpacity;
-            animation-iteration-count: 2;
-            animation-timing-function: ease-in;
-            animation-duration: .5s; */
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            float: left;
-        }
-
-        .legend-container {
-            float: right;
-            border: 2px solid black;
-            max-width: 100px;
-            max-height: 200 px;
-            width: 30%;
-
-        }
+        .p {
+            text-align: left;
+            width: 80%;
+            /* max-width: 0px; */
+            margin-left: 30px;
+            border: 1px solid none;
+            max-width:900px;
 
 
-        p {
-            text-align: center;
+
         }
 
         svg {
             background-color: white;
-            /* overflow: visible; */
+            border-color: green;
+            float:center;
         }
 
-        .svg-container {
-            /* opacity: 1; */
-            border: 3px solid orange;
-            max-width: 700px;
-            width: 100%;
-
-
-        }
-        .big-container {
-            /* border: 3px solid rgb(62, 177, 81); */
-            padding: 20px;
-        }
 
 
         h1 {
-            float: left;
+            float: center;
         }
+
         .float-child-map {
-            width: 100%;
-            float: left;
+            width: 85%;
+            max-width:900px;
+            float: center;
             padding: 0px;
             border: 1px solid none;
-            max-width: 1000px;
         } 
 
-        .float-child-legend {
-            width: 10%;
-            height:20%;
-            float: left;
-            padding: 20px;
-            border: 2px solid red;
-            max-height: 200px;
-        } 
 
         .float-container {
-            border: 3px solid #fff;
-            padding: 20px;
+            border: 2px solid none;
+            width:100%;
+            height:850px;
+            float: left;
         }
+        .slider {
+            max-width: 900px;
+            float:"right";
+        }
+        
+        .h2 {
+            text-size-adjust: 180%;
+            float:"right";
+        }
+
+        .svg.p {
+            max-width: 50px;
+            }
 
 
 
@@ -96,31 +68,44 @@
 
 <body>
     
-    <div class = "h1"> Centennial Changes in Chicago Population  </div>
+    <div class = "h1"> On the Move: Chicago Residential Patterns Reflects the Challenges and Opportunities of the Decade  </div>
+    <div class = "h4"> By: Gabe Morrison </div>
+    <div class = "h4"> March 12, 2022</div>
+
+    <div class = "p", id="history1"> </div>
+    <div class = "p"> </div>
+
+    <div class = "p", id="history2"> </div>
+    <div class = "p"> </div>
+
+    <div class = "p", id="history3"> </div>
+    <div class = "p"> </div>
+
+    <div class = "p", id="history4"> </div>
+    <div class = "p">  </div>
+
+
     
-    
-    <div id ="slider">
-        <div id="slider-time"></div>
-        <div> <p id="value-time"></p></div>
-    </div>
-        
     
     <div class="svg">
+
+    <div class="#slider", id ="slider">
+        <div id="slider-time"></div>
+        <div class = "#h2"> <p id="value-time", style="font-size:215%"> </p></div>
+    </div>
+        
         <div class = "float-container"> 
             <div class = "float-child-map"> 
                 <div id="map"> </div> 
+
+                <div, class = "p", id ="notes", style="font-size:80%"> </div>
+
             </div>
 
-            <!-- <div class="float-child-legend"> 
-                <img src="for_legend2-01.svg"> </img> 
-            </div> -->
         </div>
+   
     </div>
 
-    
-    <div> 
-      <p> Test</p>
-    </div>
     
 
 </body>
@@ -140,8 +125,43 @@
 
 
 <script>
+    let time_between_intervals = 15000
+
+
+    let text1 = "Chicago’s population and migration patterns are both emblematic of urban dynamics across America, but they also reveal Chicago’s uniqueness. Relative to American cities on the East Coast, Chicago is young. It was incorporated as a city in 1837, well after metropolises like New York City and Philadelphia. Fueled by immigration from Europe and by it manufacturing and trading prowess, Chicago’s population exploded in the between 1850 and 1930. <br> <br>"
+    let text2 = "Like other American cities in the 20th century, Chicago experienced White Flight to the suburbs, displacement from highway construction, and a hollowing out of the city center. More recently, Chicago has experienced a downtown repopulation and revitalization. <br> <br>"    
+    let text3 = "But Chicago is also unique, particularly in its racial and ethnic diversity. Black Americans migrated to Chicago as part of the Great Migration away from the South and made Chicago a “Black Mecca” in the mid 20th century. In more recent years, many Hispanics have moved to Chicago’s Northwest and Southwest Sides. However, this diversity should not be confused with equality. In fact, Chicago has a sordid history of segregation, particularly against African Americans, who were ruthlessly segregated into a handful of neighborhoods in the first half of the 20th century. Disinvestment of minority communities has and continues to be one of Chicago’s most pressing challenges and explains the exodus of Black Chicagoans from the South Side in the past 50 years. <br> <br>"
+    let text4 = "The maps below show the total population and level of population change in Chicago from 1920 – 2020. Circle size indicates neighborhood population, and color indicates growth or decline from the previous decade. The annotations highlight the trends show how the trends described above area revealed themselves across time and space. The chart updates automatically, but you can also change the year shown with the slider below. <br> <br>"
+    let text_end = "All data is from IPUMS. Data was extracted at the census tract scale from the census tracts of a given year and “cross-walked” to the 2010 census tract scale. A full list of citations for the written content above and for the IPUMS data can be found here: <br> <br>"
+
+
+
+
+    d3.select('#history1')
+        .append('div')
+        .html(text1)
+    d3.select('#history2')
+        .append('div')
+        .html(text2)
+    d3.select('#history3')
+        .append('div')
+        .html(text3)
+    d3.select('#history4')
+        .append('div')
+        .html(text4)
+
+    d3.select("#notes")
+        .append("div")
+        .html(text_end)
+
+    d3.select('p#value-time').text("Chicago Population and Change in 1920")
+
+
 
     const map_container = d3.select('#map')
+
+
+
 
     data_1920 = d3.xml("1920.svg")
 
@@ -159,8 +179,7 @@
 
 
     function update_chart(year){
-        
-        console.log("Updating:")
+       
         console.log(year)
 
         let year_st = String(year)
@@ -183,8 +202,8 @@
                 map_container
                 .selectAll("*")
                 .transition()
-                .delay(200)
-                .duration(500)
+                .delay(100)
+                .duration(600)
                 .ease(d3.easeLinear)
                 .style("opacity", 1)
 
@@ -193,38 +212,30 @@
            
     }
 
-    // legend = d3.xml("for_legend2-01.svg")
-    //     .then(data => {
-    //         d3.select("#legend")
-    //         //.style("opacity", 1)
-    //         .node()
-    //         .append(data.documentElement)
-    //     })
-    
-    // console.log({legend})
-    
-
-
-
-
 
     var dataTime = [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
 
-    console.log({dataTime})
+    var current_year = 1920
+    var keep_changing = "Yes"
+
+    var title_text = "Chicago Population and Change in "
 
     var sliderTime = d3
         .sliderBottom()
         .min(1920)
         .max(2020)
         .step(10)
-        .width(400)
+        .width(450)
         .tickFormat(d3.format(""))
         .tickValues(dataTime)
         .default(dataTime[0])
         .on('onchange', val => {
-            console.log(val)
-            d3.select('p#value-time').text(val)
+            //console.log(val)
+            d3.select('p#value-time').text(title_text + val)
             update_chart(val)
+            current_year = val
+            //console.log(val)
+            //keep_changing="False"
         });
 
     var gTime = d3
@@ -236,6 +247,30 @@
         .attr('transform', 'translate(35,35)');
 
     gTime.call(sliderTime);
+
+
+
+    function update(){
+
+        if (current_year == 2020){
+            current_year = 1920
+        } else{
+            current_year = current_year + 10
+        }
+        
+        new_time_text = String(current_year)
+        update_chart(new_time_text)
+        
+        sliderTime
+            .value(current_year)
+
+        }
+
+
+    d3.interval(update, time_between_intervals)
+
+
+
 
 
 
