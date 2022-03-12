@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <style>
         body {
-            max-width: 500px;
+            max-width: 350;
             /* margin-right: auto;
             margin-left: auto;
             margin-top: 10px;
@@ -16,9 +16,9 @@
             margin: 10px auto;
         }
         .chart-container {
-            max-width: 1050px;
-            /* background-color: red; */
-            /* border: 3px solid red; */
+            max-width: 500px;
+            /* background-color: green; */
+            border: 3px solid orange;
             /* margin: 0 auto; */
             /* auto centers the div */
             opacity: 1;
@@ -27,30 +27,67 @@
             animation-timing-function: ease-in;
             animation-duration: .5s; */
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            float: left;
         }
 
-        /* @keyframes fadeInOpacity {
-            0% {
-                opacity: 1;
-                }
-            100% {
-                opacity: 0;
-                }
-            } */
+        .legend-container {
+            float: right;
+            border: 2px solid black;
+            max-width: 100px;
+            max-height: 200 px;
+            width: 30%;
+
+        }
+
 
         p {
-            /* text-align: center; */
+            text-align: center;
         }
 
         svg {
             background-color: white;
-            overflow: visible;
+            /* overflow: visible; */
+        }
+
+        .svg-container {
+            /* opacity: 1; */
+            border: 3px solid orange;
+            max-width: 700px;
+            width: 100%;
+
+
+        }
+        .big-container {
+            /* border: 3px solid rgb(62, 177, 81); */
+            padding: 20px;
         }
 
 
         h1 {
-            border: 2px solid green;
+            float: left;
         }
+        .float-child-map {
+            width: 100%;
+            float: left;
+            padding: 0px;
+            border: 1px solid none;
+            max-width: 1000px;
+        } 
+
+        .float-child-legend {
+            width: 10%;
+            height:20%;
+            float: left;
+            padding: 20px;
+            border: 2px solid red;
+            max-height: 200px;
+        } 
+
+        .float-container {
+            border: 3px solid #fff;
+            padding: 20px;
+        }
+
 
 
      
@@ -58,11 +95,32 @@
 </head>
 
 <body>
-    <div class="row align-items-center">
-        <div class="col-sm-2"><p id="value-time"></p></div>
-        <div class="col-sm"><div id="slider-time"></div></div>
-      </div>
-    <div id="svg-container", class="fade-in">  </div> 
+    
+    <div class = "h1"> Centennial Changes in Chicago Population  </div>
+    
+    
+    <div id ="slider">
+        <div id="slider-time"></div>
+        <div> <p id="value-time"></p></div>
+    </div>
+        
+    
+    <div class="svg">
+        <div class = "float-container"> 
+            <div class = "float-child-map"> 
+                <div id="map"> </div> 
+            </div>
+
+            <!-- <div class="float-child-legend"> 
+                <img src="for_legend2-01.svg"> </img> 
+            </div> -->
+        </div>
+    </div>
+
+    
+    <div> 
+      <p> Test</p>
+    </div>
     
 
 </body>
@@ -83,25 +141,24 @@
 
 <script>
 
-    const map_container = d3.select('#svg-container') 
-    
+    const map_container = d3.select('#map')
 
     data_1920 = d3.xml("1920.svg")
 
+
     console.log({data_1920})
     
-    data_1920
+    d2 = data_1920
         .then(data => {
             map_container
             .style("opacity", 1)
             .node()
             .append(data.documentElement)})
 
+    console.log({d2})
+
 
     function update_chart(year){
-        // map_container
-        //         .transition().duration(1000).ease(d3.easeLinear).style("opacity", 0)
-
         
         console.log("Updating:")
         console.log(year)
@@ -110,29 +167,45 @@
         let file = year_st + ".svg"
         let map = d3.xml(file)
 
-        // map_container
-        //     .transition().duration(1000).ease(d3.easeLinear).style("opacity", 0)
-            // .then()
-            // .selectAll("*")
-            // .remove();
-
+        map_container.selectAll("*").html(null);
         
+        map             
+            .then(data => {
+                map_container
+                .selectAll("*")
+                .style("opacity", .1)
+                .node()
+                .append(data.documentElement) 
+            })
 
-        //map_container.style("opacity", .5)
+        map
+            .then(data => {
+                map_container
+                .selectAll("*")
+                .transition()
+                .delay(200)
+                .duration(500)
+                .ease(d3.easeLinear)
+                .style("opacity", 1)
 
-        map_container.selectAll("*").remove();
+            })
 
-        map             .then(data => {
-                        d3.select("#svg-container")
-                        .style("opacity", 0)
-                        .node()
-                        .append(data.documentElement)})
-
-        map_container
-            .transition().delay(200).duration(500).ease(d3.easeLinear).style("opacity", 1)
-
-
+           
     }
+
+    // legend = d3.xml("for_legend2-01.svg")
+    //     .then(data => {
+    //         d3.select("#legend")
+    //         //.style("opacity", 1)
+    //         .node()
+    //         .append(data.documentElement)
+    //     })
+    
+    // console.log({legend})
+    
+
+
+
 
 
     var dataTime = [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
